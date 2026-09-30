@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SKU Generator</title>
+    <!-- PyScript CDN -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2023.05.1/pyscript.css" />
+    <script defer src="https://pyscript.net/releases/2023.05.1/pyscript.js"></script>
+</head>
+<body>
+
+    <!-- Navigation links -->
+    <p>
+        <a href="index.html">SKU Generator</a> | 
+        <a href="receipt.html">Receipt Generator</a>
+    </p>
+
+    <h1>SKU Generator</h1>
+
+    <!-- Form with Dropdown Options -->
+    <label for="category">Category:</label><br>
+    <select id="category">
+        <option value="">-- Choose Category --</option>
+        <option value="Cookies">Cookies</option>
+        <option value="Pastries">Pastries</option>
+        <option value="Drinks">Drinks</option>
+    </select><br><br>
+
+    <label for="pname">Product Name:</label><br>
+    <select id="pname">
+        <option value="">-- Choose Product --</option>
+        <option value="Chocolate Chip">Chocolate Chip</option>
+        <option value="Double Chocolate Fudge">Double Chocolate Fudge</option>
+        <option value="Red Velvet Cream Cheese">Red Velvet Cream Cheese</option>
+        <option value="Oatmeal Raisin">Oatmeal Raisin</option>
+        <option value="Matcha Green Tea">Matcha Green Tea</option>
+    </select><br><br>
+
+    <label for="quantity">Stock Quantity:</label><br>
+    <input type="number" id="quantity" placeholder="e.g. 50"><br><br>
+
+    <button py-click="generate_sku()">Generate SKU</button>
+
+    <h3>Result:</h3>
+    <div id="output">Your generated SKU will appear here.</div>
+
+    <!-- PyScript Python Code -->
+    <py-config>
+    </py-config>
+
+    <py-script>
+from js import document
+
+def generate_sku():
+    # 1. Handling Input using PyScript and Datatypes
+    category_input = document.getElementById("category").value  # String
+    name_input = document.getElementById("pname").value          # String
+    qty_input = document.getElementById("quantity").value        # String/Integer
+
+    # Check if inputs are empty
+    if category_input == "" or name_input == "" or qty_input == "":
+        document.getElementById("output").innerText = "Please select all options and enter a quantity!"
+        return
+
+    # 2. Data as Values - Using split() method
+    # Take the first 3 letters of category (converted to uppercase)
+    cat_code = category_input.upper()[:3]
+
+    # Split the product name into words to extract initials/first letters
+    words_list = name_input.split(" ")
+    name_letters = []
+    
+    for word in words_list:
+        if len(word) > 0:
+            name_letters.append(word[0].upper())
+
+    # 3. Data as Values - Using join() method
+    # Join the letters of the product name together
+    name_code = "".join(name_letters)
+
+    # 4. Converting Quantity to Integer type
+    stock_num = int(qty_input)
+
+    # Construct the final SKU code (e.g., COO-CC-50)
+    sku_parts = [cat_code, name_code, str(stock_num)]
+    final_sku = "-".join(sku_parts)
+
+    # Output result to HTML
+    document.getElementById("output").innerText = "Generated SKU: " + final_sku
+    </py-script>
+
+</body>
+</html>

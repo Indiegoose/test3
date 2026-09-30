@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Receipt Generator</title>
+    <!-- PyScript CDN -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2023.05.1/pyscript.css" />
+    <script defer src="https://pyscript.net/releases/2023.05.1/pyscript.js"></script>
+</head>
+<body>
+
+    <!-- Navigation links -->
+    <p>
+        <a href="index.html">SKU Generator</a> | 
+        <a href="receipt.html">Receipt Generator</a>
+    </p>
+
+    <h1>OBMC Entrep Fair - Cookie Shop</h1>
+    <h2>Menu</h2>
+
+    <!-- Menu Checkboxes -->
+    <input type="checkbox" id="item1" value="45"> Chocolate Chip - ₱45<br>
+    <input type="checkbox" id="item2" value="50"> Double Chocolate Fudge - ₱50<br>
+    <input type="checkbox" id="item3" value="55"> Red Velvet Cream Cheese - ₱55<br>
+    <input type="checkbox" id="item4" value="45"> Oatmeal Raisin - ₱45<br>
+    <input type="checkbox" id="item5" value="50"> Matcha Green Tea - ₱50<br><br>
+
+    <button py-click="create_order()">Create Order</button>
+
+    <h3>Order Summary:</h3>
+    <div id="receipt-output">Your order summary will appear here.</div>
+
+    <!-- PyScript Code directly inside the HTML file -->
+    <py-config>
+    </py-config>
+
+    <py-script>
+from js import document
+
+def create_order():
+    total_price = 0.0
+    selected_items = []
+
+    if document.getElementById("item1").checked:
+        total_price += float(document.getElementById("item1").value)
+        selected_items.append("Chocolate Chip (₱45)")
+
+    if document.getElementById("item2").checked:
+        total_price += float(document.getElementById("item2").value)
+        selected_items.append("Double Chocolate Fudge (₱50)")
+
+    if document.getElementById("item3").checked:
+        total_price += float(document.getElementById("item3").value)
+        selected_items.append("Red Velvet Cream Cheese (₱55)")
+
+    if document.getElementById("item4").checked:
+        total_price += float(document.getElementById("item4").value)
+        selected_items.append("Oatmeal Raisin (₱45)")
+
+    if document.getElementById("item5").checked:
+        total_price += float(document.getElementById("item5").value)
+        selected_items.append("Matcha Green Tea (₱50)")
+
+    if len(selected_items) > 0:
+        items_string = ", ".join(selected_items)
+        summary = "Items Ordered: " + items_string + " | Total Amount: ₱" + str(total_price)
+    else:
+        summary = "No items selected."
+
+    document.getElementById("receipt-output").innerText = summary
+    </py-script>
+
+</body>
+</html>
